@@ -10,6 +10,7 @@ public class Customer {
     private Long id;
     private String name;
     private String email;
+    private String number;
 
     @OneToMany(mappedBy = "customer")
     private List<Review> reviews;
@@ -17,10 +18,11 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String name, String email, List<Review> reviews){
+    public Customer(String name, String email, List<Review> reviews, String number){
         this.name = name;
         this.email = email;
         this.reviews = reviews;
+        this.number = number;
     }
 
     public Long getId() {
@@ -55,4 +57,11 @@ public class Customer {
         this.reviews = reviews;
     }
 
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number){
+        this.number = number;
+    }
 }

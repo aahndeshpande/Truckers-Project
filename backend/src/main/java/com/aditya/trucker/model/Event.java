@@ -28,6 +28,14 @@ public class Event {
     
     // getters and setters
 
+    public Long getId(){
+        return id;
+    }
+
+    public void setId(Long id){
+        this.id = id;
+    }
+
     public String getName(){
         return name;
     }
@@ -36,7 +44,7 @@ public class Event {
         this.name = name;
     }
 
-    public String setDescription(){
+    public String getDescription(){
         return description;
     }
 
@@ -44,7 +52,7 @@ public class Event {
         this.description = description;
     }
 
-    public Community geCommunity(){
+    public Community getCommunity(){
         return community;
     }
 
