@@ -1,0 +1,153 @@
+@startuml
+
+' Main Architecture
+skinparam monochrome true
+skinparam defaultFontSize 12
+
+rectangle "Frontend" {
+  rectangle "React Components" as UI
+  rectangle "Redux Store" as State
+  rectangle "API Client" as API
+}
+
+rectangle "Backend" {
+  rectangle "REST Controllers" as Controllers
+  rectangle "Business Services" as Services
+  rectangle "Data Repositories" as Repositories
+}
+
+rectangle "Database" {
+  rectangle "H2 Database" as H2
+}
+
+rectangle "External Services" {
+  rectangle "AWS Services" as AWS
+  rectangle "S3 Storage" as S3
+  rectangle "CloudWatch" as CloudWatch
+}
+
+UI --> State
+State --> API
+Controllers --> Services
+Services --> Repositories
+Backend --> Database
+Backend --> AWS
+AWS --> S3
+AWS --> CloudWatch
+
+@enduml
+
+
+@startuml
+
+' Frontend Architecture
+skinparam monochrome true
+skinparam defaultFontSize 12
+
+rectangle "Pages" {
+  rectangle Dashboard
+  rectangle Communities
+  rectangle Events
+  rectangle "Food Trucks" as FoodTrucks
+  rectangle Profile
+}
+
+rectangle "Components" {
+  rectangle Layout
+  rectangle Navigation
+  rectangle "Card Components" as Cards
+  rectangle "Form Components" as Forms
+}
+
+rectangle "State Management" {
+  rectangle "Redux Store" as Redux
+  rectangle Authentication as Auth
+  rectangle "UI State" as UI
+}
+
+Pages --> Components
+Components --> State Management
+State Management --> Redux
+Auth --> Redux
+UI --> Redux
+
+@enduml
+
+
+@startuml
+
+' Backend Architecture
+skinparam monochrome true
+skinparam defaultFontSize 12
+
+rectangle "Authentication" {
+  rectangle Login
+  rectangle Register
+  rectangle "JWT Token" as JWT
+}
+
+rectangle "Food Truck" {
+  rectangle "Create" as FT_Create
+  rectangle "Read" as FT_Read
+  rectangle "Update" as FT_Update
+  rectangle "Delete" as FT_Delete
+}
+
+rectangle "Community" {
+  rectangle "Create" as C_Create
+  rectangle "Read" as C_Read
+  rectangle "Update" as C_Update
+  rectangle "Delete" as C_Delete
+}
+
+rectangle "Event" {
+  rectangle "Create" as E_Create
+  rectangle "Read" as E_Read
+  rectangle "Update" as E_Update
+  rectangle "Delete" as E_Delete
+}
+
+Login --> JWT
+Register --> JWT
+FT_Create --> Food Truck
+FT_Read --> Food Truck
+FT_Update --> Food Truck
+FT_Delete --> Food Truck
+C_Create --> Community
+C_Read --> Community
+C_Update --> Community
+C_Delete --> Community
+E_Create --> Event
+E_Read --> Event
+E_Update --> Event
+E_Delete --> Event
+
+@enduml
+
+
+@startuml
+
+' Data Flow
+skinparam monochrome true
+skinparam defaultFontSize 12
+
+actor User
+rectangle Frontend
+rectangle Backend
+rectangle Database
+
+User -> Frontend : Make API Request
+Frontend -> Backend : Send Request
+Backend -> Database : Query Data
+Database --> Backend : Return Data
+Backend --> Frontend : Send Response
+Frontend --> User : Display Data
+
+User -> Frontend : Submit Form
+Frontend -> Backend : Send Data
+Backend -> Database : Store Data
+Database --> Backend : Confirm
+Backend --> Frontend : Success Response
+Frontend --> User : Update UI
+
+@enduml

@@ -206,7 +206,31 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Architecture
 
-Check out the [detailed architecture diagrams](docs/diagrams/architecture.md) for a visual overview of the project structure and data flow.
+The project architecture consists of several key components:
+
+1. **Main Architecture**
+   - Frontend (React + Redux)
+   - Backend (Spring Boot)
+   - Database (H2)
+   - External Services (AWS)
+
+2. **Frontend Architecture**
+   - Pages (Dashboard, Communities, Events, Food Trucks)
+   - Components (Layout, Navigation, Cards, Forms)
+   - State Management (Redux, Authentication, UI State)
+
+3. **Backend Architecture**
+   - Authentication (Login, Register, JWT)
+   - Food Truck Management (CRUD operations)
+   - Community Management (CRUD operations)
+   - Event Management (CRUD operations)
+
+4. **Data Flow**
+   - Complete request/response cycle
+   - Form submission flow
+   - Data storage and retrieval processes
+
+For detailed diagrams, check the [architecture.puml](docs/diagrams/architecture.puml) file in the repository.
 
 ## Acknowledgments
 
