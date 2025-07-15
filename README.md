@@ -204,6 +204,10 @@ Default credentials:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+## Architecture
+
+Check out the [detailed architecture diagrams](docs/diagrams/architecture.md) for a visual overview of the project structure and data flow.
+
 ## Acknowledgments
 
 - Aditya Aahn Deshpande - Project Owner and Lead Developer
