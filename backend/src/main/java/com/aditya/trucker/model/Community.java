@@ -1,93 +1,124 @@
 package com.aditya.trucker.model;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.util.List;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 
+@Data
 @Entity
+@NoArgsConstructor
+@Table(name = "communities")
 public class Community {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(nullable = false)
     private String address;
 
-    @ManyToMany(mappedBy = "communities")
-    private List<FoodTruck> foodTrucks;
+    @Column(nullable = false)
+    private String city;
 
-    @OneToMany(mappedBy = "community")
-    private List<Event> events;
+    @Column(nullable = false)
+    private String state;
 
+    @Column(nullable = false)
+    private String zipCode;
+
+    @Column(nullable = false)
     private String contactPerson;
+
+    @Column(nullable = false)
     private String contactEmail;
 
-    public Community(){
-    }
+    @Column(nullable = false)
+    private String contactPhone;
 
-    public Community(String name, String address, String contactPerson, String contactEmail) {
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private String websiteUrl;
+
+    @Column(nullable = false)
+    private String imageUrl;
+
+    @Column(nullable = false)
+    private String socialMediaUrl;
+
+    @ManyToMany
+    @JoinTable(
+        name = "community_food_truck",
+        joinColumns = @JoinColumn(name = "community_id"),
+        inverseJoinColumns = @JoinColumn(name = "food_truck_id")
+    )
+    private List<FoodTruck> foodTrucks;
+
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> events;
+
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommunityMember> members;
+
+    public Community(String name, String address, String city, String state, String zipCode,
+                    String contactPerson, String contactEmail, String contactPhone,
+                    String description, String websiteUrl, String imageUrl, String socialMediaUrl) {
         this.name = name;
         this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
         this.contactPerson = contactPerson;
         this.contactEmail = contactEmail;
+        this.contactPhone = contactPhone;
+        this.description = description;
+        this.websiteUrl = websiteUrl;
+        this.imageUrl = imageUrl;
+        this.socialMediaUrl = socialMediaUrl;
     }
 
-    public long getId(){
-        return id;
+    public void addFoodTruck(FoodTruck foodTruck) {
+        this.foodTrucks.add(foodTruck);
     }
 
-    public void setId(Long id){
-        this.id = id;
-    }
-    
-    public String getName(){
-        return name;
-    }
-    
-    public void setName(String name){
-        this.name = name;
+    public void removeFoodTruck(FoodTruck foodTruck) {
+        this.foodTrucks.remove(foodTruck);
     }
 
-    public String getAddress(){
-        return address;
+    public void addEvent(Event event) {
+        event.setCommunity(this);
+        this.events.add(event);
     }
 
-    public void setAddress(String address){
-        this.address = address;
+    public void removeEvent(Event event) {
+        event.setCommunity(null);
+        this.events.remove(event);
     }
 
-    public String getContactPerson() {
-        return contactPerson;
+    public void addReview(Review review) {
+        review.setCommunity(this);
+        this.reviews.add(review);
     }
 
-    public void setContactPerson(String contactPerson) {
-        this.contactPerson = contactPerson;
+    public void removeReview(Review review) {
+        review.setCommunity(null);
+        this.reviews.remove(review);
     }
 
-    public String getContactEmail() {
-        return contactEmail;
+    public void addMember(CommunityMember member) {
+        member.setCommunity(this);
+        this.members.add(member);
     }
 
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
-    }
-
-    public List<FoodTruck> getFoodTrucks() {
-        return foodTrucks;
-    }
-
-    public void setFoodTrucks(List<FoodTruck> foodTrucks) {
-        this.foodTrucks = foodTrucks;
-    }
-
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<Event> events) {
-        this.events = events;
+    public void removeMember(CommunityMember member) {
+        member.setCommunity(null);
+        this.members.remove(member);
     }
 }
