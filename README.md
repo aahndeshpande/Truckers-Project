@@ -1,4 +1,9 @@
 # Truckers-Project
+[![GitHub](https://img.shields.io/github/license/aahndeshpande/Truckers-Project)](https://github.com/aahndeshpande/Truckers-Project/blob/main/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/aahndeshpande/Truckers-Project)](https://github.com/aahndeshpande/Truckers-Project/issues)
+[![GitHub contributors](https://img.shields.io/github/contributors/aahndeshpande/Truckers-Project)](https://github.com/aahndeshpande/Truckers-Project/graphs/contributors)
+[![GitHub stars](https://img.shields.io/github/stars/aahndeshpande/Truckers-Project)](https://github.com/aahndeshpande/Truckers-Project/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/aahndeshpande/Truckers-Project)](https://github.com/aahndeshpande/Truckers-Project/network/members)
 
 A full-stack web application that connects food truck owners with food enthusiasts through a community-driven platform.
 
