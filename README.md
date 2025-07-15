@@ -206,7 +206,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- Spring Boot team for the excellent framework
-- React community for the amazing ecosystem
-- Material-UI team for the beautiful UI components
-- All contributors who helped with this project
+- Aditya Aahn Deshpande - Project Owner and Lead Developer
