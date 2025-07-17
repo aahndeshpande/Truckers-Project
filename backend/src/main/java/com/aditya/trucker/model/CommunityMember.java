@@ -3,11 +3,13 @@ package com.aditya.trucker.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "community_members")
 public class CommunityMember {
     @Id
@@ -58,5 +60,25 @@ public class CommunityMember {
 
     public void removeMembership() {
         this.status = "REMOVED";
+    }
+
+    public void setCommunity(Community community) {
+        this.community = community;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setIsApproved(boolean isApproved) {
+        this.isApproved = isApproved;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

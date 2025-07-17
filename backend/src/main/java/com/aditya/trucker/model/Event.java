@@ -2,14 +2,18 @@ package com.aditya.trucker.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor
 @Table(name = "events")
+@EqualsAndHashCode(of = "id")
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,41 +40,51 @@ public class Event {
     @Column(nullable = false)
     private String zipCode;
 
-    @Column(nullable = false)
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
 
-    @Column(nullable = false)
+    @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
 
     @Column(nullable = false)
     private int capacity;
 
-    @Column(nullable = false)
+    @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(nullable = false)
-    private boolean isPublic;
+    @Column(name = "is_public", nullable = false)
+    private boolean isPublic = true;
 
-    @Column(nullable = false)
+    @Column(name = "contact_person")
     private String contactPerson;
 
-    @Column(nullable = false)
+    @Column(name = "contact_email")
     private String contactEmail;
 
-    @Column(nullable = false)
+    @Column(name = "contact_phone")
     private String contactPhone;
 
-    @Column(nullable = false)
+    @Column(name = "website_url")
     private String websiteUrl;
 
-    @Column(nullable = false)
+    @Column(name = "social_media_url")
     private String socialMediaUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private Owner owner;
+    private Double latitude;
 
-    @ManyToOne
+    private Double longitude;
+
+    @Column(name = "average_rating", columnDefinition = "double default 0.0")
+    private double averageRating = 0.0;
+
+    @Column(name = "participant_count", columnDefinition = "int default 0")
+    private int participantCount = 0;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organizer_id", nullable = false)
+    private User organizer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "community_id")
     private Community community;
 
@@ -80,18 +94,19 @@ public class Event {
         joinColumns = @JoinColumn(name = "event_id"),
         inverseJoinColumns = @JoinColumn(name = "foodtruck_id")
     )
-    private List<FoodTruck> foodTrucks;
+    private List<FoodTruck> foodTrucks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EventParticipant> participants;
-
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EventReview> reviews;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<EventParticipant> participants = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<EventReview> reviews = new ArrayList<>();
 
     public Event(String name, String description, String location, String address, String city,
                 String state, String zipCode, LocalDateTime startTime, LocalDateTime endTime,
                 int capacity, String imageUrl, boolean isPublic, String contactPerson,
-                String contactEmail, String contactPhone, String websiteUrl, String socialMediaUrl) {
+                String contactEmail, String contactPhone, String websiteUrl, String socialMediaUrl,
+                double latitude, double longitude, double averageRating, int participantCount) {
         this.name = name;
         this.description = description;
         this.location = location;
@@ -109,13 +124,19 @@ public class Event {
         this.contactPhone = contactPhone;
         this.websiteUrl = websiteUrl;
         this.socialMediaUrl = socialMediaUrl;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.averageRating = averageRating;
+        this.participantCount = participantCount;
     }
 
     public void addFoodTruck(FoodTruck foodTruck) {
+        foodTruck.getEvents().add(this);
         this.foodTrucks.add(foodTruck);
     }
 
     public void removeFoodTruck(FoodTruck foodTruck) {
+        foodTruck.getEvents().remove(this);
         this.foodTrucks.remove(foodTruck);
     }
 
@@ -138,33 +159,4 @@ public class Event {
         review.setEvent(null);
         this.reviews.remove(review);
     }
-
-    public void setDescription(String description){
-        this.description = description;
-    }
-
-    public Community getCommunity(){
-        return community;
-    }
-
-    public void setCommunity(Community community){
-        this.community = community;
-    }
-
-    public List<FoodTruck> getFoodTrucks(){
-        return foodTrucks;
-    }
-
-    public void setFoodTrucks(List<FoodTruck> foodTrucks){
-        this.foodTrucks = foodTrucks;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-    
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
 }

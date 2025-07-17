@@ -9,9 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/communities")
@@ -77,13 +79,6 @@ public class CommunityController {
                 contactPerson, contactEmail, contactPhone, description,
                 websiteUrl, socialMediaUrl, imageUrl);
         return ResponseEntity.ok(community);
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('OWNER')")
-    public ResponseEntity<Void> deleteCommunity(@PathVariable Long id) {
-        communityService.deleteCommunity(id);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/owner/{ownerId}")
@@ -195,6 +190,9 @@ public class CommunityController {
         List<Community> communities = communityService.getCommunitiesByDistance(latitude, longitude, radius);
         return ResponseEntity.ok(communities);
     }
+
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Void> deleteCommunity(@PathVariable Long id) {
         communityService.deleteCommunity(id);
         return ResponseEntity.noContent().build();
     }

@@ -1,88 +1,70 @@
 package com.aditya.trucker.model;
 
-import java.time.LocalDate;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+@Data
 @Entity
+@NoArgsConstructor
+@Table(name = "reviews")
+@EqualsAndHashCode(of = "id")
 public class Review {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Integer rating;
 
+    @Column(nullable = false, length = 1000)
     private String comment;
 
-    private LocalDate date;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    @ManyToOne
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_truck_id")
     private FoodTruck foodTruck;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Review() {
-        // Default constructor
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
+    private Event event;
 
-    public Review(Integer rating, String comment, LocalDate date, FoodTruck foodTruck, Customer customer) {
+    @Column(name = "is_verified", nullable = false)
+    private boolean isVerified = false;
+
+    public Review(Integer rating, String comment, User user, FoodTruck foodTruck) {
         this.rating = rating;
         this.comment = comment;
-        this.date = date;
+        this.user = user;
         this.foodTruck = foodTruck;
-        this.customer = customer;
+        if (user instanceof Customer) {
+            this.customer = (Customer) user;
+        }
     }
 
-    // getters and setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public FoodTruck getFoodTruck() {
-        return foodTruck;
-    }
-
-    public void setFoodTruck(FoodTruck foodTruck) {
-        this.foodTruck = foodTruck;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void updateReview(Integer rating, String comment) {
+        if (rating != null) {
+            this.rating = rating;
+        }
+        if (comment != null && !comment.trim().isEmpty()) {
+            this.comment = comment;
+        }
+        this.updatedAt = LocalDateTime.now();
     }
 }

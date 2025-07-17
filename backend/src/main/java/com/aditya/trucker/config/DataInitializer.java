@@ -7,8 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import java.util.Arrays;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.aditya.trucker.repository.EventParticipantRepository;
+import com.aditya.trucker.repository.CommunityMemberRepository;
+import com.aditya.trucker.repository.EventReviewRepository;
 
 @Configuration
 @RequiredArgsConstructor
@@ -19,6 +24,9 @@ public class DataInitializer {
     private final MenuItemRepository menuItemRepository;
     private final CommunityRepository communityRepository;
     private final EventRepository eventRepository;
+    private final EventParticipantRepository eventParticipantRepository;
+    private final CommunityMemberRepository communityMemberRepository;
+    private final EventReviewRepository eventReviewRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Bean
@@ -77,14 +85,57 @@ public class DataInitializer {
             communityRepository.save(community);
 
             // Create event
-            Event event = new Event();
-            event.setTitle("Food Truck Festival");
-            event.setDescription("Join us for a weekend of delicious food");
-            event.setDateTime("2025-07-20T12:00:00");
-            event.setLocation("Central Park");
+            Event event = new Event(
+                "Food Truck Festival",
+                "Join us for a weekend of delicious food",
+                "Central Park",
+                "123 Main St",
+                "Downtown",
+                "CA",
+                "90001",
+                LocalDateTime.parse("2025-07-20T12:00:00"),
+                LocalDateTime.parse("2025-07-20T18:00:00"),
+                100,
+                "https://example.com/event.jpg",
+                true,
+                "John Doe",
+                "contact@example.com",
+                "555-1234",
+                "https://example.com",
+                "https://social.example.com"
+            );
             event.setCommunity(community);
-            event.setFoodTruck(foodTruck);
+            event.setOwner(owner);
             eventRepository.save(event);
+
+            // Add food truck to community
+            community.addFoodTruck(foodTruck);
+            communityRepository.save(community);
+
+            // Add food truck to event
+            event.getFoodTrucks().add(foodTruck);
+            eventRepository.save(event);
+
+            // Create event participant
+            EventParticipant participant = new EventParticipant(user1, event, 1, "I'll bring my family");
+            eventParticipantRepository.save(participant);
+
+            // Create community member
+            CommunityMember member = new CommunityMember(user1, community);
+            communityMemberRepository.save(member);
+
+            // Create review
+            EventReview review = new EventReview(
+                user1,
+                event,
+                5,
+                "Amazing food and great atmosphere!",
+                true,
+                "Excellent",
+                "Well organized",
+                "Perfect experience"
+            );
+            eventReviewRepository.save(review);
         };
     }
 }

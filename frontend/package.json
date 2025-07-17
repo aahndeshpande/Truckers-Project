@@ -23,7 +23,7 @@
     "web-vitals": "^2.1.4",
     "@mui/lab": "^5.0.0-alpha.152",
     "formik": "^2.4.5",
-    "formik-material-ui": "^5.0.0",
+    "formik-material-ui": "^4.1.0",
     "date-fns": "^2.30.0",
     "react-datepicker": "^4.12.0",
     "react-image-upload": "^1.1.11",

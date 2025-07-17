@@ -1,64 +1,43 @@
 package com.aditya.trucker.model;
 
-import java.time.LocalTime;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import java.time.LocalTime;
 
+@Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "operating_hours")
 public class OperatingHours {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String dayOfWeek;
 
+    @Column(nullable = false)
     private LocalTime openTime;
 
+    @Column(nullable = false)
     private LocalTime closeTime;
 
     @ManyToOne
     @JoinColumn(name = "food_truck_id")
     private FoodTruck foodTruck;
 
-    // getters and setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public void setDayOfWeek(String dayOfWeek) {
+    public OperatingHours(String dayOfWeek, LocalTime openTime, LocalTime closeTime, FoodTruck foodTruck) {
         this.dayOfWeek = dayOfWeek;
-    }
-
-    public LocalTime getOpenTime() {
-        return openTime;
-    }
-
-    public void setOpenTime(LocalTime openTime) {
         this.openTime = openTime;
-    }
-
-    public LocalTime getCloseTime() {
-        return closeTime;
-    }
-
-    public void setCloseTime(LocalTime closeTime) {
         this.closeTime = closeTime;
-    }
-
-    public FoodTruck getFoodTruck() {
-        return foodTruck;
-    }
-
-    public void setFoodTruck(FoodTruck foodTruck) {
         this.foodTruck = foodTruck;
+    }
+
+    public void updateHours(LocalTime openTime, LocalTime closeTime) {
+        this.openTime = openTime;
+        this.closeTime = closeTime;
     }
 }

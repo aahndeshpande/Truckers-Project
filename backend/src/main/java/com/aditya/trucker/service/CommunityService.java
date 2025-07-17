@@ -1,3 +1,4 @@
+
 package com.aditya.trucker.service;
 
 import com.aditya.trucker.model.Community;

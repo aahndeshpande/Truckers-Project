@@ -3,11 +3,13 @@ package com.aditya.trucker.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "event_reviews")
 public class EventReview {
     @Id
@@ -64,5 +66,21 @@ public class EventReview {
         this.foodTruckRating = foodTruckRating;
         this.organizationRating = organizationRating;
         this.overallExperience = overallExperience;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

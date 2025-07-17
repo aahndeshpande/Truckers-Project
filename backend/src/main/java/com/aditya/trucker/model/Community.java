@@ -3,11 +3,13 @@ package com.aditya.trucker.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "communities")
 public class Community {
     @Id
@@ -85,10 +87,12 @@ public class Community {
     }
 
     public void addFoodTruck(FoodTruck foodTruck) {
+        foodTruck.getCommunities().add(this);
         this.foodTrucks.add(foodTruck);
     }
 
     public void removeFoodTruck(FoodTruck foodTruck) {
+        foodTruck.getCommunities().remove(this);
         this.foodTrucks.remove(foodTruck);
     }
 
